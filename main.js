@@ -33,7 +33,7 @@ document.addEventListener(RENDER_EVENT, function () {
 
     for (const bookItem of filteredBooks) {
         const bookElement = makeBook(bookItem);
-        if(bookItem.isCompleted){
+        if(bookItem.isComplete){
             completeBook.append(bookElement);
         } else {
             uncompletedBook.append(bookElement);
@@ -58,7 +58,7 @@ function generateId() {
 function addBook() {
     const titleBook = document.getElementById('bookFormTitle').value;
     const authorBook = document.getElementById('bookFormAuthor').value;
-    const yearBook = document.getElementById('bookFormYear').value;
+    const yearBook = parseInt(document.getElementById('bookFormYear').value);
     const completeBook = document.getElementById('bookFormIsComplete').checked;
    
     const generatedID = generateId();
@@ -91,13 +91,13 @@ function saveData() {
     }
 };
 
-function generateBookObject(id, title, author, year, isCompleted) {
+function generateBookObject(id, title, author, year, isComplete) {
     return {
         id,
         title,
         author,
         year,
-        isCompleted
+        isComplete
     };
 };
 
@@ -113,7 +113,7 @@ function makeBook(bookObject) {
     bookYear.innerText = `Year : ${bookObject.year}`;
 
     const buttonComplete = document.createElement('button');
-    if(!bookObject.isCompleted){
+    if(!bookObject.isComplete){
         buttonComplete.setAttribute('data-testid', 'bookItemIsCompleteButton');
         buttonComplete.innerText = 'Completed';
         buttonComplete.setAttribute('class', 'button');
@@ -178,7 +178,7 @@ function completeBook(bookId){
 
     if(bookTarget == null) return;
 
-    bookTarget.isCompleted = true;
+    bookTarget.isComplete = true;
     document.dispatchEvent(new Event(RENDER_EVENT));
     saveData();
 };
@@ -188,7 +188,7 @@ function incompleteBook(bookId){
 
     if(bookTarget == null) return;
 
-    bookTarget.isCompleted = false;
+    bookTarget.isComplete = false;
     document.dispatchEvent(new Event(RENDER_EVENT));
     saveData();
 };
@@ -277,7 +277,7 @@ function showEdit(data){
 function editBook(bookId){
     const titleValue = document.getElementById('editBookTitle').value;
     const authorValue = document.getElementById('editBookAuthor').value;
-    const yearValue = document.getElementById('editBookYear').value;
+    const yearValue = parseInt(document.getElementById('editBookYear').value);
     const bookTarget = findBook(bookId);
 
     if(bookTarget == null) return;
